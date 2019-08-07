@@ -3,6 +3,7 @@ package com.cheesecoffee.services.serviceImpl;
 import com.cheesecoffee.common.Constants;
 import com.cheesecoffee.dtos.LazadaParamsDto;
 import com.cheesecoffee.services.LazadaService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Mac;
@@ -11,6 +12,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -20,13 +22,33 @@ public class LazadaServiceImpl implements LazadaService {
         String result = "";
         // For dummy
         // bytes = encryptHMACSHA256("/order/getaccess_tokentestapp_key123456order_id1234sign_methodsha256timestamp1517820392000","helloworld");
-
         try {
+//            Map<String,String> params =
+//                    new ObjectMapper().readValue(dto.getParams(), HashMap.class);
             result = signApiRequest(dto.getParams(), dto.getBody(), dto.getAppSecret(), dto.getSignMethod(), dto.getApiName());
+
         } catch (IOException e) {
             e.printStackTrace();
         }
         return result;
+    }
+
+    @Override
+    public String test() {
+        String s = "";
+        Map<String,String> params = new HashMap<>();
+        params.put("access_token","test");
+        params.put("app_key","123456");
+        params.put("timestamp","1517820392000");
+        params.put("order_id","1234");
+        params.put("sign_method","sha256");
+
+        try {
+             s = signApiRequest(params,null,"helloworld","SHA-256","/order/get");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return s;
     }
 
 

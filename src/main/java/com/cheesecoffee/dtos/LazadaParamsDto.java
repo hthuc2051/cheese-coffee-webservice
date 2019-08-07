@@ -18,4 +18,18 @@ public class LazadaParamsDto {
     private String signMethod;
     private String apiName;
 
+    @Override
+    public String toString() {
+        String s ="";
+        for (Map.Entry entry : params.entrySet()) {
+            s += entry.getKey() + ", " + entry.getValue();
+        }
+        return "LazadaParamsDto{" +
+                s+","+
+                ", body='" + body + '\'' +
+                ", appSecret='" + appSecret + '\'' +
+                ", signMethod='" + signMethod + '\'' +
+                ", apiName='" + apiName + '\'' +
+                '}';
+    }
 }
