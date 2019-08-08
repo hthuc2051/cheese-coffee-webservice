@@ -23,32 +23,11 @@ public class LazadaServiceImpl implements LazadaService {
         // For dummy
         // bytes = encryptHMACSHA256("/order/getaccess_tokentestapp_key123456order_id1234sign_methodsha256timestamp1517820392000","helloworld");
         try {
-//            Map<String,String> params =
-//                    new ObjectMapper().readValue(dto.getParams(), HashMap.class);
             result = signApiRequest(dto.getParams(), dto.getBody(), dto.getAppSecret(), dto.getSignMethod(), dto.getApiName());
-
         } catch (IOException e) {
             e.printStackTrace();
         }
         return result;
-    }
-
-    @Override
-    public String test() {
-        String s = "";
-        Map<String,String> params = new HashMap<>();
-        params.put("access_token","test");
-        params.put("app_key","123456");
-        params.put("timestamp","1517820392000");
-        params.put("order_id","1234");
-        params.put("sign_method","sha256");
-
-        try {
-             s = signApiRequest(params,null,"helloworld","SHA-256","/order/get");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return s;
     }
 
 
@@ -56,31 +35,33 @@ public class LazadaServiceImpl implements LazadaService {
 
         byte[] bytes = null;
 
-        String[] keys = params.keySet().toArray(new String[0]);
-        Arrays.sort(keys);
-
+        // Append api name
         StringBuilder query = new StringBuilder();
         query.append(apiName);
-        for (String key : keys) {
-            String value = params.get(key);
-            if (key != null && !key.equalsIgnoreCase("")) {
-                query.append(key).append(value);
+
+        // Append params arr
+        String[] keys;
+        if(params != null){
+            keys = params.keySet().toArray(new String[0]);
+            Arrays.sort(keys);
+            for (String key : keys) {
+                String value = params.get(key);
+                if (key != null && !key.equalsIgnoreCase("")) {
+                    query.append(key).append(value);
+                }
             }
         }
-
+        // Append body
         if (body != null) {
             query.append(body);
         }
-
-
-
+        // Append sign method
         if (signMethod.equals(Constants.SIGN_METHOD_SHA256)) {
             bytes = encryptHMACSHA256(query.toString(), appSecret);
-        }else{
-
+        } else {
+            //TODO: Custom exception later
         }
 
-        // finally : transfer sign result from binary to upper hex string
         return byte2hex(bytes);
     }
 
@@ -101,13 +82,38 @@ public class LazadaServiceImpl implements LazadaService {
 
     public static String byte2hex(byte[] bytes) {
         StringBuilder sign = new StringBuilder();
-        for (int i = 0; i < bytes.length; i++) {
-            String hex = Integer.toHexString(bytes[i] & 0xFF);
-            if (hex.length() == 1) {
-                sign.append("0");
+        if (bytes.length > 0) {
+            for (int i = 0; i < bytes.length; i++) {
+                String hex = Integer.toHexString(bytes[i] & 0xFF);
+                if (hex.length() == 1) {
+                    sign.append("0");
+                }
+                sign.append(hex.toUpperCase());
             }
-            sign.append(hex.toUpperCase());
+            return sign.toString();
         }
-        return sign.toString();
+
+        return "";
     }
+
+
+    @Override
+    public String test() {
+        String s = "";
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", "test");
+        params.put("app_key", "123456");
+        params.put("timestamp", "1517820392000");
+        params.put("order_id", "1234");
+        params.put("sign_method", "sha256");
+
+        try {
+            s = signApiRequest(params, null, "helloworld", "SHA-256", "/order/get");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return s;
+    }
+
+
 }

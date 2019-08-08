@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping("/api")
 public class URLController {
-    Logger logger = Logger.getLogger(URLController.class.getName());
+
     private final LazadaService lazadaService;
     private final ShopeeService shopeeService;
 
@@ -26,39 +26,27 @@ public class URLController {
         this.shopeeService = shopeeService;
     }
 
-    @PostMapping(value = "/lazada",consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
-            produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public String getUrlLazada(LazadaParamsDto dto) {
-        logger.log(Level.WARNING,dto.toString());
-        System.out.println(dto.toString());
-        return lazadaService.generateUrl(dto);
-    }
-
-    @PostMapping("/lazada1")
-    public String getUrlLazada1(@RequestBody LazadaParamsDto dto) {
-        logger.log(Level.WARNING,dto.toString());
-        System.out.println(dto.toString());
+    @PostMapping("/lazada")
+    public String getUrlLazada(@RequestBody LazadaParamsDto dto) {
         return lazadaService.generateUrl(dto);
     }
 
 
-    @GetMapping("/test")
-    public String testUrl() {
-        return lazadaService.test();
-    }
-
-    @PostMapping("/test2")
-    public String testUrl(@RequestBody String s) {
-        System.out.println(s);
-        logger.log(Level.WARNING,s);
-
-        return lazadaService.test();
-    }
-
-    @PostMapping("/test3")
+    @PostMapping("/shopee")
     public String getUrlShopee(@RequestBody ShopeeParamsDto dto) {
-        System.out.println(dto.toString());
-        logger.log(Level.WARNING,dto.toString());
-        return lazadaService.test();
+        return "";
     }
+
+    //TODO: Later
+//    @PostMapping("/tiki")
+//    public String getUrlTiki(@RequestBody ShopeeParamsDto dto) {
+//        return "";
+//    }
+//
+//    @PostMapping("/sendo")
+//    public String getUrlSendo(@RequestBody ShopeeParamsDto dto) {
+//        return "";
+//    }
+
+
 }
