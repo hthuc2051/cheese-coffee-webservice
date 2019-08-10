@@ -13,7 +13,6 @@ import java.util.Map;
 @Setter
 public class LazadaParamsDto {
     private Map<String, String> params;
-    private String body;
     private String appSecret;
     private String signMethod;
     private String apiName;
@@ -26,7 +25,6 @@ public class LazadaParamsDto {
         }
         return "LazadaParamsDto{" +
                 s+","+
-                ", body='" + body + '\'' +
                 ", appSecret='" + appSecret + '\'' +
                 ", signMethod='" + signMethod + '\'' +
                 ", apiName='" + apiName + '\'' +

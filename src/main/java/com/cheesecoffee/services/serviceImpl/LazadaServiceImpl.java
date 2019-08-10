@@ -3,7 +3,6 @@ package com.cheesecoffee.services.serviceImpl;
 import com.cheesecoffee.common.Constants;
 import com.cheesecoffee.dtos.LazadaParamsDto;
 import com.cheesecoffee.services.LazadaService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Mac;
@@ -23,7 +22,7 @@ public class LazadaServiceImpl implements LazadaService {
         // For dummy
         // bytes = encryptHMACSHA256("/order/getaccess_tokentestapp_key123456order_id1234sign_methodsha256timestamp1517820392000","helloworld");
         try {
-            result = signApiRequest(dto.getParams(), dto.getBody(), dto.getAppSecret(), dto.getSignMethod(), dto.getApiName());
+            result = signApiRequest(dto.getParams(), dto.getAppSecret(), dto.getSignMethod(), dto.getApiName());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -31,29 +30,29 @@ public class LazadaServiceImpl implements LazadaService {
     }
 
 
-    public static String signApiRequest(Map<String, String> params, String body, String appSecret, String signMethod, String apiName) throws IOException {
+    public static String signApiRequest(Map<String, String> params, String appSecret, String signMethod, String apiName) throws IOException {
+
+        String url = "";
 
         byte[] bytes = null;
 
         // Append api name
         StringBuilder query = new StringBuilder();
         query.append(apiName);
+        url += apiName + "?";
 
         // Append params arr
         String[] keys;
-        if(params != null){
+        if (params != null) {
             keys = params.keySet().toArray(new String[0]);
             Arrays.sort(keys);
             for (String key : keys) {
                 String value = params.get(key);
                 if (key != null && !key.equalsIgnoreCase("")) {
                     query.append(key).append(value);
+                    url += key + "=" + value + "&";
                 }
             }
-        }
-        // Append body
-        if (body != null) {
-            query.append(body);
         }
         // Append sign method
         if (signMethod.equals(Constants.SIGN_METHOD_SHA256)) {
@@ -61,8 +60,9 @@ public class LazadaServiceImpl implements LazadaService {
         } else {
             //TODO: Custom exception later
         }
-
-        return byte2hex(bytes);
+        String hexCode = byte2hex(bytes);
+        String result = url + "sign=" + hexCode;
+        return Constants.ENDPOINT_LAZADA + result;
     }
 
 
@@ -92,7 +92,6 @@ public class LazadaServiceImpl implements LazadaService {
             }
             return sign.toString();
         }
-
         return "";
     }
 
@@ -108,12 +107,11 @@ public class LazadaServiceImpl implements LazadaService {
         params.put("sign_method", "sha256");
 
         try {
-            s = signApiRequest(params, null, "helloworld", "SHA-256", "/order/get");
+            s = signApiRequest(params, "helloworld", "SHA-256", "/order/get");
         } catch (IOException e) {
             e.printStackTrace();
         }
         return s;
     }
-
 
 }
