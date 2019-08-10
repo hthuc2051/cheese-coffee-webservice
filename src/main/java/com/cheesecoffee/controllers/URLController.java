@@ -5,12 +5,10 @@ import com.cheesecoffee.dtos.ShopeeParamsDto;
 import com.cheesecoffee.services.LazadaService;
 import com.cheesecoffee.services.ShopeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import sun.rmi.runtime.Log;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.IOException;
+
 
 @RestController
 @RequestMapping("/api")
@@ -33,8 +31,8 @@ public class URLController {
 
 
     @PostMapping("/shopee")
-    public String getUrlShopee(@RequestBody ShopeeParamsDto dto) {
-        return "";
+    public String getUrlShopee(@RequestBody ShopeeParamsDto dto) throws IOException {
+        return shopeeService.generateUrl(dto);
     }
 
     //TODO: Later

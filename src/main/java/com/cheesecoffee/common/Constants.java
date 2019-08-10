@@ -2,6 +2,7 @@ package com.cheesecoffee.common;
 
 public class Constants {
     public static String ENDPOINT_LAZADA = "https://api.lazada.vn/rest/";
+    public static String ENDPOINT_SHOPEE = "https://partner.shopeemobile.com/api/v1/";
 
     public static final String CHARSET_UTF8 = "UTF-8";
 
