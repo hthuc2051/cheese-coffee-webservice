@@ -5,5 +5,5 @@ import com.cheesecoffee.dtos.ShopeeParamsDto;
 import java.io.IOException;
 
 public interface ShopeeService {
-   String  generateUrl(ShopeeParamsDto dto) throws IOException;
+    String generateUrl(ShopeeParamsDto dto) throws IOException;
 }

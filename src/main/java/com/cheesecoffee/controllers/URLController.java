@@ -46,5 +46,8 @@ public class URLController {
 //        return "";
 //    }
 
-
+    @GetMapping("/testLazada")
+    public String testUrlLazada() {
+        return lazadaService.test();
+    }
 }
