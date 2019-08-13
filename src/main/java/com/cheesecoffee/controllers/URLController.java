@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Map;
 
 
 @RestController
@@ -31,7 +32,7 @@ public class URLController {
 
 
     @PostMapping("/shopee")
-    public String getUrlShopee(@RequestBody ShopeeParamsDto dto) throws IOException {
+    public Map<String, String> getUrlShopee(@RequestBody ShopeeParamsDto dto) throws IOException {
         return shopeeService.generateUrl(dto);
     }
 

@@ -3,7 +3,8 @@ package com.cheesecoffee.services;
 import com.cheesecoffee.dtos.ShopeeParamsDto;
 
 import java.io.IOException;
+import java.util.Map;
 
 public interface ShopeeService {
-    String generateUrl(ShopeeParamsDto dto) throws IOException;
+    Map<String, String> generateUrl(ShopeeParamsDto dto) throws IOException;
 }

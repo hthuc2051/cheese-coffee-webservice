@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.json.JSONObject;
 
+import java.sql.Timestamp;
 import java.util.Map;
 
 @Getter
@@ -22,6 +23,9 @@ public class ShopeeParamsDto {
 
 
     public String getUrl() {
+        Timestamp ts = new Timestamp(System.currentTimeMillis());
+        long miliSecs = ts.getTime();
+        params.put(Constants.PARAM_TIMESTAMP, String.valueOf(miliSecs));
         JSONObject object = new JSONObject(params);
         String s = object.toString();
         return Constants.ENDPOINT_SHOPEE + apiName + "|" + s;
